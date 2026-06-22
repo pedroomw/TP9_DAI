@@ -1,0 +1,20 @@
+{
+  "name": "tp9_dai",
+  "version": "1.0.0",
+  "description": "TP9 Probando Middlewares y Tokens",
+  "homepage": "https://github.com/pedroomw/TP9_DAI#readme",
+  "bugs": {
+    "url": "https://github.com/pedroomw/TP9_DAI/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pedroomw/TP9_DAI.git"
+  },
+  "license": "ISC",
+  "author": "Agustin \"El Maestro\" Aiello y Pedro \"La Maravilla\" Malowicki",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
