@@ -7,10 +7,15 @@ class AuthController {
         try{
             const user = req.body
             const resultado = await svc.register(user)
-            res.send(201).json(resultado)
+            if(resultado){
+               return res.status(201).json(resultado) 
+            } else {
+                return res.status(500).json("Error interno")
+            }
+            
         } catch (err) {
             res.status(500).json({
-                error: err
+                error: err.message
             })
         }
     }
@@ -31,4 +36,4 @@ class AuthController {
     }
 }
 
-export default Controller
+export default AuthController

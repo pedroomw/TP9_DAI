@@ -1,0 +1,764 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+BD/
+  CreacionBD.sql
+src/
+  configs/
+    db-config.js
+  controllers/
+    auth-controller.js
+    post-controller.js
+    profile-controller.js
+  middlewares/
+    auth-middlewares.js
+  repositories/
+    auth-repository.js
+    user-repository.js
+  routes/
+    auth-router.js
+    post-router.js
+    user-router.js
+  services/
+    auth-services.js
+    user-services.js
+  app.js
+.gitignore
+package.json
+README.md
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="src/configs/db-config.js">
+import { Pool } from "pg";
+import 'dotenv/config'
+
+const pool = new Pool({
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
+})
+
+export default pool
+</file>
+
+<file path="BD/CreacionBD.sql">
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 16.2
+-- Dumped by pg_dump version 16.2
+
+-- Started on 2026-07-03 09:04:02
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 4800 (class 1262 OID 16405)
+-- Name: Instagram; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE "Instagram" WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'Spanish_Argentina.1252';
+
+
+ALTER DATABASE "Instagram" OWNER TO postgres;
+
+\connect "Instagram"
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 216 (class 1259 OID 16407)
+-- Name: publicaciones; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.publicaciones (
+    id integer NOT NULL,
+    usuario_id integer NOT NULL,
+    url_imagen character varying NOT NULL,
+    descripcion text,
+    likes integer DEFAULT 0 NOT NULL,
+    fecha_creacion timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.publicaciones OWNER TO postgres;
+
+--
+-- TOC entry 215 (class 1259 OID 16406)
+-- Name: publicaciones_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.publicaciones ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.publicaciones_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 218 (class 1259 OID 16417)
+-- Name: usuarios; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.usuarios (
+    id integer NOT NULL,
+    nombre_completo character varying NOT NULL,
+    email character varying NOT NULL,
+    password character varying NOT NULL,
+    foto_perfil character varying,
+    biografia text,
+    nombre_usuario character varying NOT NULL
+);
+
+
+ALTER TABLE public.usuarios OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 16416)
+-- Name: usuarios_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.usuarios ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.usuarios_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 4792 (class 0 OID 16407)
+-- Dependencies: 216
+-- Data for Name: publicaciones; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.publicaciones (id, usuario_id, url_imagen, descripcion, likes, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 4794 (class 0 OID 16417)
+-- Dependencies: 218
+-- Data for Name: usuarios; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.usuarios (id, nombre_completo, email, password, foto_perfil, biografia, nombre_usuario) FROM stdin;
+\.
+
+
+--
+-- TOC entry 4801 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: publicaciones_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.publicaciones_id_seq', 1, false);
+
+
+--
+-- TOC entry 4802 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: usuarios_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.usuarios_id_seq', 1, false);
+
+
+--
+-- TOC entry 4642 (class 2606 OID 16415)
+-- Name: publicaciones publicaciones_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.publicaciones
+    ADD CONSTRAINT publicaciones_pk PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4644 (class 2606 OID 16423)
+-- Name: usuarios usuarios_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.usuarios
+    ADD CONSTRAINT usuarios_pk PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4646 (class 2606 OID 16425)
+-- Name: usuarios usuarios_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.usuarios
+    ADD CONSTRAINT usuarios_unique UNIQUE (nombre_usuario);
+
+
+--
+-- TOC entry 4647 (class 2606 OID 16426)
+-- Name: publicaciones publicaciones_usuarios_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.publicaciones
+    ADD CONSTRAINT publicaciones_usuarios_fk FOREIGN KEY (usuario_id) REFERENCES public.usuarios(id) ON DELETE CASCADE;
+
+
+-- Completed on 2026-07-03 09:04:02
+
+--
+-- PostgreSQL database dump complete
+--
+</file>
+
+<file path="src/controllers/post-controller.js">
+
+</file>
+
+<file path="src/controllers/profile-controller.js">
+class ProfileController{
+    getProfile = async (req, res) => {
+        
+    }
+}
+
+export default ProfileController
+</file>
+
+<file path="src/repositories/user-repository.js">
+
+</file>
+
+<file path="src/routes/post-router.js">
+import Router from "express";
+
+const router = Router()
+
+router.post("/register", async(req, res) => {
+    await AuthController.register(req, res)
+})
+
+router.post("/login", async(req, res) => {
+    await AuthController.login(req, res)
+})
+
+router.get("")
+
+export default router
+</file>
+
+<file path="src/routes/user-router.js">
+import Router from "express";
+import ProfileController from "../controllers/profile-controller.js";
+import authMiddleware from "../middlewares/auth-middlewares.js";
+
+const controller = new ProfileController()
+
+const router = Router()
+
+router.use(authMiddleware)
+
+router.get("/perfil", authMiddleware, async(req, res) => {
+    await controller.getProfile(req, res)
+})
+
+router.put("/login", async(req, res) => {
+    await controller.login(req, res)
+})
+
+router.get("")
+
+export default router
+</file>
+
+<file path="src/services/user-services.js">
+import AuthRepository from "../repositories/auth-repository.js"
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
+
+const repo = new AuthRepository()
+
+class AuthService{
+    getProfile = async (id) => {
+        try{
+            
+        }
+        catch (err) {
+            throw err
+        }
+    }
+
+    login = async (login_data) => {
+        try{
+            const usuario = repo.buscarUsuarioPorNombreDeUsuario(login_data.nombre_usuario)
+            if(!usuario){
+                throw new Error ("Usuario no encontrado")
+            }
+            bcrypt.compare(login_data.password, usuario.password, (err, result) => {
+                if (err) {
+                    throw new Error (err)
+                } 
+                const payload = {
+                    id: usuario.id,
+                    role: "user"
+                }
+                await jwt.sign(usuario.id, process.env.SECRET_KEY, {expiresIn: "1h"}, (err, token) => {
+                    if(err){
+                        throw new Error (err)
+                    }
+                    return token
+                })
+            })
+        } catch (err) {
+            throw err
+        }
+    }
+}
+
+export default AuthService
+</file>
+
+<file path=".gitignore">
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Directory for instrumented libs generated by jscoverage/JSCover
+lib-cov
+
+# Coverage directory used by tools like istanbul
+coverage
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
+.grunt
+
+# Bower dependency directory (https://bower.io/)
+bower_components
+
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons (https://nodejs.org/api/addons.html)
+build/Release
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Snowpack dependency directory (https://snowpack.dev/)
+web_modules/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variable files
+.env
+.env.*
+!.env.example
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Next.js build output
+.next
+out
+
+# Nuxt.js build / generate output
+.nuxt
+dist
+.output
+
+# Gatsby files
+.cache/
+# Comment in the public line in if your project uses Gatsby and not Next.js
+# https://nextjs.org/blog/next-9-1#public-directory-support
+# public
+
+# vuepress build output
+.vuepress/dist
+
+# vuepress v2.x temp directory
+.temp
+
+# Sveltekit cache directory
+.svelte-kit/
+
+# vitepress build output
+**/.vitepress/dist
+
+# vitepress cache directory
+**/.vitepress/cache
+
+# Docusaurus cache and generated files
+.docusaurus
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# Firebase cache directory
+.firebase/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# pnpm
+.pnpm-store
+
+# yarn v3
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# Vite files
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+.vite/
+</file>
+
+<file path="README.md">
+# TP9_DAI
+</file>
+
+<file path="src/controllers/auth-controller.js">
+import AuthService from "../services/auth-services.js"
+
+const svc = new AuthService()
+
+class AuthController {
+    register = async (req, res) => {
+        try{
+            const user = req.body
+            const resultado = await svc.register(user)
+            if(resultado){
+               return res.send(201).json(resultado) 
+            } else {
+                return res.send(500).json("Error interno")
+            }
+            
+        } catch (err) {
+            res.status(500).json({
+                error: err.message
+            })
+        }
+    }
+
+    login = async (req, res) => {
+        try{
+            const login_data = req.body
+            const resultado = await svc.login(login_data)
+            res.status(200).json({
+                message: "Login exitoso",
+                token: resultado
+            })
+        } catch (err) {
+            res.status(500).json({
+                error: err
+            })
+        }
+    }
+}
+
+export default AuthController
+</file>
+
+<file path="src/middlewares/auth-middlewares.js">
+import jwt from 'jsonwebtoken'
+
+const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ message: 'Token no proporcionado' });
+  }
+
+  const token = authHeader.split(' ')[1];
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: 'Token invalido o expirado' });
+  }
+};
+
+export default authMiddleware
+</file>
+
+<file path="src/repositories/auth-repository.js">
+import pool from '../configs/db-config.js'
+
+class AuthRepository {
+    registrar = async (user) => {
+        try {
+            const {nombre_usuario, nombre_completo, email, password} = user
+            const sqlQuery = "INSERT INTO usuarios (nombre_usuario, nombre_completo, email, password) VALUES ($1, $2, $3, $4) RETURNING *"
+            const values = [nombre_usuario, nombre_completo, email, password]
+            const respuesta = await pool.query(sqlQuery, values)
+            if(respuesta){
+                return respuesta
+            } else {
+                throw new Error ("Fallo en el insert")
+            }
+        } catch (err){
+            throw err
+        }
+    }
+
+    buscarUsuarioPorNombreDeUsuario = async (nombre_usuario) => {
+        try{
+            client.connect()
+            const sqlQuery = "SELECT * FROM usuarios WHERE nombre_usuario = $1"
+            const values = [nombre_usuario]
+            const respuesta = client.query(sqlQuery, values)
+            return respuesta
+        } catch (err) {
+            throw err
+        }
+    }
+}
+
+export default AuthRepository
+</file>
+
+<file path="src/routes/auth-router.js">
+import Router from "express";
+import AuthMiddleware from "../middlewares/auth-middlewares.js"
+import AuthController from "../controllers/auth-controller.js"
+
+const controller = new AuthController();
+const router = Router()
+
+router.post("/register", async(req, res) => {
+    await controller.register(req, res)
+})
+
+router.post("/login", async(req, res) => {
+    await controller.login(req, res)
+})
+
+export default router
+</file>
+
+<file path="src/services/auth-services.js">
+import AuthRepository from "../repositories/auth-repository.js"
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
+
+const repo = new AuthRepository()
+
+class AuthService{
+    register = async (user) => {
+        try{
+            const hash = await bcrypt.hash(user.password, 10)
+            user.password = hash
+            const resultado = await repo.registrar(user)
+            return resultado
+        } catch (err) {
+            throw err
+        }
+    }
+
+    login = async (login_data) => {
+        try{
+            const usuario = repo.buscarUsuarioPorNombreDeUsuario(login_data.nombre_usuario)
+            if(!usuario){
+                throw new Error ("Usuario no encontrado")
+            }
+            bcrypt.compare(login_data.password, usuario.password, async (err, result) => {
+                if (err) {
+                    throw new Error ({message: err})
+                } 
+                const payload = {
+                    id: usuario.id,
+                    role: "user"
+                }
+                await jwt.sign(usuario.id, process.env.SECRET_KEY, {expiresIn: "1h"}, (err, token) => {
+                    if(err){
+                        throw new Error (err)
+                    }
+                    return token
+                })
+            })
+        } catch (err) {
+            throw err
+        }
+    }
+}
+
+export default AuthService
+</file>
+
+<file path="src/app.js">
+import express from 'express'
+import cors from 'cors'
+
+import AuthRouter from "./routes/auth-router.js"
+import UserRouter from "./routes/user-router.js"
+import PostRouter from "./routes/post-router.js"
+
+const app = express();
+const PORT = process.env.PORT || 3000
+
+app.use(cors())
+app.use(express.json());
+
+app.use("/api/auth", AuthRouter)
+
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
+</file>
+
+<file path="package.json">
+{
+  "name": "tp9_dai",
+  "version": "1.0.0",
+  "description": "TP9 Probando Middlewares y Tokens",
+  "homepage": "https://github.com/pedroomw/TP9_DAI#readme",
+  "bugs": {
+    "url": "https://github.com/pedroomw/TP9_DAI/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pedroomw/TP9_DAI.git"
+  },
+  "license": "ISC",
+  "author": "Agustin \"El Maestro\" Aiello y Pedro \"La Maravilla\" Malowicki",
+  "type": "module",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "nodemon": "^3.1.14",
+    "pg": "^8.22.0",
+    "router": "^2.2.0"
+  }
+}
+</file>
+
+</files>

@@ -13,9 +13,10 @@
   "license": "ISC",
   "author": "Agustin \"El Maestro\" Aiello y Pedro \"La Maravilla\" Malowicki",
   "type": "module",
-  "main": "index.js",
+  "main": "src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

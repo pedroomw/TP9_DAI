@@ -7,14 +7,10 @@ const repo = new AuthRepository()
 class AuthService{
     register = async (user) => {
         try{
-            bcrypt.hash(user.password, 10, (hash, err) => {
-            if(!err){
-                user.password = hash
-                return await repo.registrar(user)
-            } else {
-                throw new error ("Error en la encriptación")
-            }
-        })
+            const hash = await bcrypt.hash(user.password, 10)
+            user.password = hash
+            const resultado = await repo.registrar(user)
+            return resultado
         } catch (err) {
             throw err
         }
@@ -22,11 +18,13 @@ class AuthService{
 
     login = async (login_data) => {
         try{
+            console.log(login_data.password)
             const usuario = repo.buscarUsuarioPorNombreDeUsuario(login_data.nombre_usuario)
+            console.log(usuario.password)
             if(!usuario){
                 throw new Error ("Usuario no encontrado")
             }
-            bcrypt.compare(login_data.password, usuario.password, (err, result) => {
+            await bcrypt.compare(login_data.password, usuario.password, async (err, result) => {
                 if (err) {
                     throw new Error (err)
                 } 

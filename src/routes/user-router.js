@@ -1,12 +1,12 @@
 import Router from "express";
-import ProfileController from "../controllers/profile-controller";
-import authMiddleware from "../middlewares/auth-middlewares";
+import ProfileController from "../controllers/profile-controller.js";
+import authMiddleware from "../middlewares/auth-middlewares.js";
 
 const controller = new ProfileController()
 
-router = Router()
+const router = Router()
 
-router.use()
+router.use(authMiddleware)
 
 router.get("/perfil", authMiddleware, async(req, res) => {
     await controller.getProfile(req, res)
