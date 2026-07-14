@@ -5,17 +5,11 @@ import jwt from "jsonwebtoken"
 const repo = new AuthRepository()
 
 class AuthService{
-    register = async (user) => {
+    getProfile = async (id) => {
         try{
-            bcrypt.hash(user.password, 10, (hash, err) => {
-            if(!err){
-                user.password = hash
-                return await repo.registrar(user)
-            } else {
-                throw new error ("Error en la encriptación")
-            }
-        })
-        } catch (err) {
+            
+        }
+        catch (err) {
             throw err
         }
     }
