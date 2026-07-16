@@ -4,34 +4,32 @@ const svc = new AuthService()
 
 class AuthController {
     register = async (req, res) => {
-        try{
+        try {
             const user = req.body
             const resultado = await svc.register(user)
-            if(resultado){
-               return res.status(201).json(resultado) 
-            } else {
-                return res.status(500).json("Error interno")
-            }
-            
+            return res.status(201).json(resultado)
         } catch (err) {
-            res.status(500).json({
-                error: err.message
-            })
+            // Error de duplicado de PostgreSQL (unique constraint)
+            if (err.code === '23505') {
+                return res.status(400).json({ error: "El email o nombre de usuario ya está en uso" })
+            }
+            return res.status(500).json({ error: err.message })
         }
     }
 
     login = async (req, res) => {
-        try{
+        try {
             const login_data = req.body
-            const resultado = await svc.login(login_data)
-            res.status(200).json({
+            const token = await svc.login(login_data)
+            return res.status(200).json({
                 message: "Login exitoso",
-                token: resultado
+                token: token
             })
         } catch (err) {
-            res.status(500).json({
-                error: err
-            })
+            if (err.message === "Usuario no encontrado" || err.message === "Contraseña incorrecta") {
+                return res.status(401).json({ error: err.message })
+            }
+            return res.status(500).json({ error: err.message })
         }
     }
 }

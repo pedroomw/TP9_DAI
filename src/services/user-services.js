@@ -1,44 +1,31 @@
-import AuthRepository from "../repositories/auth-repository.js"
-import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
+import UserRepository from "../repositories/user-repository.js"
 
-const repo = new AuthRepository()
+const repo = new UserRepository()
 
-class AuthService{
+class UserService {
     getProfile = async (id) => {
-        try{
-            
-        }
-        catch (err) {
+        try {
+            const perfil = await repo.obtenerPerfilConPublicaciones(id)
+            if (!perfil) {
+                throw new Error("Usuario no encontrado")
+            }
+            return perfil
+        } catch (err) {
             throw err
         }
     }
 
-    login = async (login_data) => {
-        try{
-            const usuario = repo.buscarUsuarioPorNombreDeUsuario(login_data.nombre_usuario)
-            if(!usuario){
-                throw new Error ("Usuario no encontrado")
+    updateProfile = async (id, datos) => {
+        try {
+            const perfilActualizado = await repo.actualizarPerfil(id, datos)
+            if (!perfilActualizado) {
+                throw new Error("No se pudo actualizar el perfil")
             }
-            bcrypt.compare(login_data.password, usuario.password, (err, result) => {
-                if (err) {
-                    throw new Error (err)
-                } 
-                const payload = {
-                    id: usuario.id,
-                    role: "user"
-                }
-                await jwt.sign(usuario.id, process.env.SECRET_KEY, {expiresIn: "1h"}, (err, token) => {
-                    if(err){
-                        throw new Error (err)
-                    }
-                    return token
-                })
-            })
+            return perfilActualizado
         } catch (err) {
             throw err
         }
     }
 }
 
-export default AuthService
+export default UserService

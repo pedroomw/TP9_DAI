@@ -4,9 +4,9 @@ import jwt from "jsonwebtoken"
 
 const repo = new AuthRepository()
 
-class AuthService{
+class AuthService {
     register = async (user) => {
-        try{
+        try {
             const hash = await bcrypt.hash(user.password, 10)
             user.password = hash
             const resultado = await repo.registrar(user)
@@ -17,28 +17,25 @@ class AuthService{
     }
 
     login = async (login_data) => {
-        try{
-            console.log(login_data.password)
-            const usuario = repo.buscarUsuarioPorNombreDeUsuario(login_data.nombre_usuario)
-            console.log(usuario.password)
-            if(!usuario){
-                throw new Error ("Usuario no encontrado")
+        try {
+            const usuario = await repo.buscarUsuarioPorNombreDeUsuario(login_data.nombre_usuario)
+            if (!usuario) {
+                throw new Error("Usuario no encontrado")
             }
-            await bcrypt.compare(login_data.password, usuario.password, async (err, result) => {
-                if (err) {
-                    throw new Error (err)
-                } 
-                const payload = {
-                    id: usuario.id,
-                    role: "user"
-                }
-                await jwt.sign(usuario.id, process.env.SECRET_KEY, {expiresIn: "1h"}, (err, token) => {
-                    if(err){
-                        throw new Error (err)
-                    }
-                    return token
-                })
-            })
+
+            const passwordValida = await bcrypt.compare(login_data.password, usuario.password)
+            if (!passwordValida) {
+                throw new Error("Contraseña incorrecta")
+            }
+
+            const payload = {
+                id: usuario.id,
+                nombre_usuario: usuario.nombre_usuario,
+                role: "user"
+            }
+
+            const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "2h" })
+            return token
         } catch (err) {
             throw err
         }

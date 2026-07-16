@@ -1,15 +1,18 @@
-import Router from "express";
+import { Router } from "express"
+import PostController from "../controllers/post-controller.js"
+import authMiddleware from "../middlewares/auth-middlewares.js"
 
+const controller = new PostController()
 const router = Router()
 
-router.post("/register", async(req, res) => {
-    await AuthController.register(req, res)
+// Ruta pública: obtener todas las publicaciones (feed)
+router.get("/", async (req, res) => {
+    await controller.getPosts(req, res)
 })
 
-router.post("/login", async(req, res) => {
-    await AuthController.login(req, res)
+// Ruta protegida: crear una nueva publicación
+router.post("/", authMiddleware, async (req, res) => {
+    await controller.createPost(req, res)
 })
-
-router.get("")
 
 export default router
